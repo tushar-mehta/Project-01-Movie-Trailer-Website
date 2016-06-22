@@ -4,8 +4,8 @@ import re
 
 movie_detail = '''
 <div class="col-md-4">
-    <img src="{movie_poster_url}" data-toggle="modal" data-target="#{modal_id}" class="img-responsive center-block img-thumbnail" alt="Responsive image">
-    <h4>{movie_title}</h4>
+    <img src="{poster_image_url}" data-toggle="modal" data-target="#{modal_id}" class="img-responsive center-block img-thumbnail" alt="Responsive image">
+    <h4 class="text-center">{movie_title}</h4>
 </div>
 '''
 
@@ -16,20 +16,35 @@ movie_row = '''
 </div>
 '''
 
-first_row = '''
-<div class="row">
-    <h1>My Movies</h1>
-</div>
-<div class="row">
-    <h1>Other Information</h1>
+nav = '''
+<div class="jumbotron">
+<h1>Movie World!</h1>
+<p>Browse your favorite movies and watch youtube trailers!</p>
 </div>
 '''
 
-row_seperator = '''
-<div class="row">
-    <div class="col-md-12">
-        <hr>
-    </div>
+modal = '''
+<!-- Modal -->
+<div class="modal fade" id="{modal_id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">{movie_title}</h4>
+        </div>
+
+        <div class="modal-body">
+            <p>{movie_synopsis}</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">YouTube</button>
+        </div>
+</div>
+
+</div>
+</div>
 </div>
 '''
 
@@ -43,10 +58,10 @@ head = '''
 </head>
 '''
 
-page_body = '''
+body = '''
 <body>
     <div class="container">
-        {row1}
+        {nav}
         {mov_rows}
         {modals}
     </div>
@@ -61,50 +76,23 @@ page = '''
 </html>
 '''
 
-modal = '''
-<!-- Modal -->
-<div class="modal fade" id="{modal_id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">{movie_title}</h4>
-    </div>
-    <div class="modal-body">
-        ...
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-    </div>
-</div>
-</div>
-</div>
-'''
-
 
 def create_movie_tiles_content(movies):
     # The HTML content for this section of the page
     rows = ''
-    movies_tuples = [movies[i:i+3] for i in range(0, len(movies), 3)]
-    module_no = 0
-    for movie_tuple in movies_tuples:
-        row_data = ''
-        for movie in movie_tuple:
-            module_no += 1
-            row_data += movie_detail.format(movie_poster_url=movie.poster_image_url,
-                                            movie_title=movie.title,
-                                            modal_id='modal_{}'.format(module_no))
-
-        rows += movie_row.format(row_sep=row_seperator, movies=row_data)
-
+    for index, movie in enumerate(movies):
+        rows += movie_detail.format(poster_image_url=movie.poster_image_url,
+                                    movie_title=movie.title,
+                                    modal_id='modal_{}'.format(index))
     return rows
 
 
 def create_movie_modals(movies):
     modals = ''
     for index, movie in enumerate(movies):
-        modals += modal.format(modal_id='modal_{}'.format(index), movie_title=movie.title)
+        modals += modal.format(modal_id='modal_{}'.format(index),
+                               movie_title=movie.title,
+                               movie_synopsis=movie.movie_synopsis)
 
     return modals
 
@@ -116,13 +104,11 @@ def open_movies_page(movies):
     except Exception as e:
         print(e)
 
-    modals = create_movie_modals(movies)
-
-    body = page_body.format(row1=first_row,
+    page_body = body.format(nav=nav,
                             mov_rows=create_movie_tiles_content(movies),
-                            modals=modals)
+                            modals=create_movie_modals(movies))
 
-    html_page = page.format(head=head, body=body)
+    html_page = page.format(head=head, body=page_body)
 
     # Output the file
     output_file.write(html_page)
