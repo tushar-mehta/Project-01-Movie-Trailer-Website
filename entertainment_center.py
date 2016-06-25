@@ -11,11 +11,11 @@ def main():
     movies = [media.Movie('X-Men: Apocalypse',
                           'movie story line',
                           'http://placehold.it/250x300',  # noqa
-                          'https://www.youtube.com/watch?v=N0io2w_6vT8'),
+                          'http://www.youtube.com/watch?v=N0io2w_6vT8'),
               media.Movie('X-Men: Apocalypse',
                           'movie story line',
                           'http://placehold.it/250x300',  # noqa
-                          'https://www.youtube.com/watch?v=N0io2w_6vT8')
+                          'http://www.youtube.com/watch?v=N0io2w_6vT8')
             ]
 
     # pass list of movies to be displayed in the webpage
