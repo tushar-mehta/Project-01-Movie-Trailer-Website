@@ -9,10 +9,12 @@ movie_detail = '''
 </div>
 '''
 
-movie_row = '''
-<div class="row text-center">
-    {row_sep}
-    {movies}
+line_seperator = '''
+<div class="row">
+    <div class="col-md-12">
+        <br>
+        <br>
+    </div>
 </div>
 '''
 
@@ -159,6 +161,7 @@ movie_row = '''
 {movie1}
 {movie2}
 </div>
+{line_seperator}
 '''
 
 
@@ -181,7 +184,8 @@ def create_movie_tiles_content(movies):
     for col0, col1, col2 in col_tuples:
         rows += movie_row.format(movie0=col0,
                                  movie1=col1,
-                                 movie2=col2)
+                                 movie2=col2,
+                                 line_seperator=line_seperator)
 
     return rows
 
@@ -191,7 +195,7 @@ def create_movie_modals(movies):
     for index, movie in enumerate(movies):
         modals += modal.format(modal_id='modal_{}'.format(index),
                                movie_title=movie.title,
-                               movie_synopsis=movie.movie_synopsis,
+                               movie_synopsis=movie.synopsis,
                                trailer_youtube_url=movie.trailer_youtube_url,
                                director=movie.director,
                                rating=movie.rating,
