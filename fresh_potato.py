@@ -4,7 +4,7 @@ import re
 
 movie_detail = '''
 <div class="col-md-4">
-    <img src="{poster_image_url}" data-toggle="modal" data-target="#{modal_id}" class="img-responsive center-block img-thumbnail" alt="Responsive image">
+    <img width="220" height="340" src="{poster_image_url}" data-toggle="modal" data-target="#{modal_id}" class="img-responsive center-block img-thumbnail" alt="Responsive image">
     <h4 class="text-center">{movie_title}</h4>
 </div>
 '''
@@ -36,10 +36,14 @@ modal = '''
 
         <div class="modal-body">
             <p>{movie_synopsis}</p>
+            <p><b>Director: </b>{director}</p>
+            <p><b>Rating: </b>{rating}</p>
+            <p><b>Duration: </b>{duration}</p>
+            <p><b>Genre: </b>{genre}</p>
         </div>
 
         <div class="modal-footer">
-            <a class="btn btn-default" href="{trailer_youtube_url}" role="button" data-width="800" data-height="420">YouTube Trailer</a> 
+            <a class="btn btn-default" href="{trailer_youtube_url}" role="button" data-width="800" data-height="420">YouTube Trailer</a>
         </div>
 </div>
 
@@ -124,8 +128,6 @@ head = '''
     <meta charset="utf-8">
     <title>Fresh Patato!</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 '''
 
@@ -137,6 +139,8 @@ body = '''
     </div>
     {modals}
     {video_generic_modal}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script>{script}</script>
 </body>
 '''
@@ -149,14 +153,36 @@ page = '''
 </html>
 '''
 
+movie_row = '''
+<div class="row">
+{movie0}
+{movie1}
+{movie2}
+</div>
+'''
+
 
 def create_movie_tiles_content(movies):
     # The HTML content for this section of the page
-    rows = ''
+    cols = []
     for index, movie in enumerate(movies):
-        rows += movie_detail.format(poster_image_url=movie.poster_image_url,
+        cols.append(movie_detail.format(poster_image_url=movie.poster_image_url,
                                     movie_title=movie.title,
-                                    modal_id='modal_{}'.format(index))
+                                    modal_id='modal_{}'.format(index)))
+
+    while len(cols) % 3 != 0:
+        cols.append('')
+
+    it = iter(cols)
+    col_tuples = zip(it, it, it)
+
+    rows = ''
+
+    for col0, col1, col2 in col_tuples:
+        rows += movie_row.format(movie0=col0,
+                                 movie1=col1,
+                                 movie2=col2)
+
     return rows
 
 
@@ -166,7 +192,11 @@ def create_movie_modals(movies):
         modals += modal.format(modal_id='modal_{}'.format(index),
                                movie_title=movie.title,
                                movie_synopsis=movie.movie_synopsis,
-                               trailer_youtube_url=movie.trailer_youtube_url)
+                               trailer_youtube_url=movie.trailer_youtube_url,
+                               director=movie.director,
+                               rating=movie.rating,
+                               duration=movie.duration,
+                               genre=movie.genre)
 
     return modals
 
