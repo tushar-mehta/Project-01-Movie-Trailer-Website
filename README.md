@@ -20,15 +20,16 @@ Run `entertainment_center.py`:
 
 * `entertainment_center.py` module creates the list of movie objects by reading movie details from `movies.json` file.
 * It passes this list to `open_movies_page()` function.
-* [Error](http://github.com/tushar-mehta/Project-01-Movie-Trailer-Website/blob/master/error.html) page will be showing for any error during loading movie details from json file.
 * `open_movies_page()` generates a static web page with the movie title, poster images and youtube URL for each movie in the list.
 * Movie class defined in `media.py` module and contains only one constructor which creates and initialize movie object with a title, poster image URL, trailer youtube URL and along with other movie details.
 *  User can click on movie poster image to see it's youtube trailer.
 
 ## Demo
 
-* [Entertainment Center](http://github.com/tushar-mehta/Project-01-Movie-Trailer-Website/blob/master/fresh_potato.html)
+![sample demo screen](images/demo.png)
 
+Error while loading movies:
+![sample error screen](images/error_demo.png)
 
 ## License
 
