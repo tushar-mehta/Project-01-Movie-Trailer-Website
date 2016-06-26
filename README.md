@@ -15,7 +15,7 @@ Movie Trailer Website is my first project from **Full Stack Web Developer Nanode
 Run `entertainment_center.py`:
 
 * `python <path>/entertainment_center.py`
-* To add more movies, update 'movies.json'. If there is any erro in 'movies.json' then error will be shown on html page.
+* To add more movies, update 'movies.json'. If there is any error in 'movies.json' then error will be shown on html page.
 
 ## Details
 
