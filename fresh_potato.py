@@ -262,7 +262,7 @@ def open_movies_page(html_page, movies):
                             video_generic_modal=video_generic_modal,
                             script=script)
 
-    page_head = head.format(website_title='Error!')
+    page_head = head.format(website_title='Fresh Potato!')
 
     html_page = page.format(head=page_head, body=page_body)
 
