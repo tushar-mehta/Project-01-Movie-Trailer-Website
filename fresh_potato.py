@@ -185,10 +185,10 @@ error_html = '''
 '''
 
 
-def open_error_page(error_message):
+def open_error_page(html_page, error_message):
     # Create or overwrite the output file
     try:
-        output_file = open('error.html', 'w')
+        output_file = open(html_page, 'w')
     except Exception as e:
         print(e)
 
@@ -248,12 +248,13 @@ def create_movie_modals(movies):
     return modals
 
 
-def open_movies_page(movies):
+def open_movies_page(html_page, movies):
     # Create or overwrite the output file
     try:
-        output_file = open('fresh_potato.html', 'w')
+        output_file = open(html_page, 'w')
     except Exception as e:
-        open_error_page('Filed to create fresh_potato.html - ' + e)
+        open_error_page('Filed to create ' + html_page)
+        return
 
     page_body = body.format(nav=nav,
                             mov_rows=create_movie_tiles_content(movies),
@@ -265,10 +266,18 @@ def open_movies_page(movies):
 
     html_page = page.format(head=page_head, body=page_body)
 
-    # Output the file
-    output_file.write(html_page)
-    output_file.close()
+    try:
+        # Output the file
+        output_file.write(html_page)
+        output_file.close()
+    except Exception as e:
+        open_error_page('Filed to write in' + html_page)
+        return
 
-    # open the output file in the browser (in a new tab, if possible)
-    url = os.path.abspath(output_file.name)
-    webbrowser.open('file://' + url, new=2)
+    try:
+        # open the output file in the browser (in a new tab, if possible)
+        url = os.path.abspath(output_file.name)
+        webbrowser.open('file://' + url, new=2)
+    except Exception as e:
+        open_error_page('Filed to open in ' + html_page)
+        return
