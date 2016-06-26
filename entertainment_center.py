@@ -1,7 +1,3 @@
-"""
-entertainment center module which creates list of movies objects and hand over
-to open_movies_page() funtion in fresh_tomatoes module.
-"""
 import sys
 import json
 import media
@@ -14,6 +10,10 @@ error_html_page = 'error.html'
 
 
 def main():
+    """
+    Loads movies.json file, creates list of movies objects and pass it to
+    open_movies_page() funtion in fresh_potato module.
+    """
     json_data = ''
     try:
         with open('movies.json') as jsonfile:
