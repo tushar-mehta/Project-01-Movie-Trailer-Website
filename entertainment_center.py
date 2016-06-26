@@ -2,16 +2,22 @@
 entertainment center module which creates list of movies objects and hand over
 to open_movies_page() funtion in fresh_tomatoes module.
 """
+import sys
 import json
 import media
 # from fresh_tomatoes import open_movies_page
 from fresh_potato import open_movies_page
+from fresh_potato import open_error_page
 
 
 def main():
     json_data = ''
-    with open('movies.json') as jsonfile:
-        json_data = json.load(jsonfile)
+    try:
+        with open('movies.json') as jsonfile:
+            json_data = json.load(jsonfile)
+    except Exception as e:
+        open_error_page('Failed to load movies!')
+        sys.exit(-1)
 
     movies = []
     for movie_json in json_data:

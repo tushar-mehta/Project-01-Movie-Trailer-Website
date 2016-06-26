@@ -127,8 +127,9 @@ $('#mediaModal').on('hidden.bs.modal', function () {
 
 head = '''
 <head>
+    <title>{website_title}</title>
     <meta charset="utf-8">
-    <title>Fresh Patato!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 '''
@@ -163,6 +164,48 @@ movie_row = '''
 </div>
 {line_seperator}
 '''
+
+
+error_html = '''
+<!DOCTYPE html>
+<html lang="en">
+{head}
+<body>
+    <div class="container">
+        {nav}
+        <h2>Alerts</h2>
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> {error_message}
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
+'''
+
+
+def open_error_page(error_message):
+    # Create or overwrite the output file
+    try:
+        output_file = open('error.html', 'w')
+    except Exception as e:
+        print(e)
+
+    page_head = head.format(website_title='Error!')
+
+    html_page = error_html.format(website_title='Error!',
+                                  head=page_head,
+                                  nav=nav,
+                                  error_message=error_message)
+
+    # Output the file
+    output_file.write(html_page)
+    output_file.close()
+
+    # open the output file in the browser (in a new tab, if possible)
+    url = os.path.abspath(output_file.name)
+    webbrowser.open('file://' + url, new=2)
 
 
 def create_movie_tiles_content(movies):
@@ -210,7 +253,7 @@ def open_movies_page(movies):
     try:
         output_file = open('fresh_potato.html', 'w')
     except Exception as e:
-        print(e)
+        open_error_page('Filed to create fresh_potato.html - ' + e)
 
     page_body = body.format(nav=nav,
                             mov_rows=create_movie_tiles_content(movies),
@@ -218,7 +261,9 @@ def open_movies_page(movies):
                             video_generic_modal=video_generic_modal,
                             script=script)
 
-    html_page = page.format(head=head, body=page_body)
+    page_head = head.format(website_title='Error!')
+
+    html_page = page.format(head=page_head, body=page_body)
 
     # Output the file
     output_file.write(html_page)
