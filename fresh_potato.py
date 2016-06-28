@@ -213,8 +213,8 @@ def create_movie_tiles_content(movies):
     cols = []
     for index, movie in enumerate(movies):
         cols.append(movie_detail.format(poster_image_url=movie.poster_image_url,
-                                    movie_title=movie.title,
-                                    modal_id='modal_{}'.format(index)))
+                                        movie_title=movie.title,
+                                        modal_id='modal_{}'.format(index)))
 
     while len(cols) % 3 != 0:
         cols.append('')
